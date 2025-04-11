@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CE1D06E2-B71C-4AF6-A68E-2070852A60BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlixNet.Api", "src\FlixNet.Api\FlixNet.Api.csproj", "{A46C81A6-5A4F-4754-9332-A446AF98086F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlixNet.Application", "src\FlixNet.Application\FlixNet.Application.csproj", "{EA8F3BDE-584F-46F9-926F-075C2E6DE22E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlixNet.Core", "src\FlixNet.Core\FlixNet.Core.csproj", "{ABFA38F2-F026-4173-B8FF-DEDFE6F921EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlixNet.Persistence.EFCore", "src\FlixNet.Persistence.EFCore\FlixNet.Persistence.EFCore.csproj", "{98B45F9B-E7E3-4629-9BFB-27D824D56305}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlixNet.Infrastructure", "src\FlixNet.Infrastructure\FlixNet.Infrastructure.csproj", "{9CCFDA82-0068-43BE-899E-C3C36DBB1F92}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A46C81A6-5A4F-4754-9332-A446AF98086F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A46C81A6-5A4F-4754-9332-A446AF98086F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A46C81A6-5A4F-4754-9332-A446AF98086F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A46C81A6-5A4F-4754-9332-A446AF98086F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA8F3BDE-584F-46F9-926F-075C2E6DE22E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA8F3BDE-584F-46F9-926F-075C2E6DE22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA8F3BDE-584F-46F9-926F-075C2E6DE22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA8F3BDE-584F-46F9-926F-075C2E6DE22E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABFA38F2-F026-4173-B8FF-DEDFE6F921EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABFA38F2-F026-4173-B8FF-DEDFE6F921EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABFA38F2-F026-4173-B8FF-DEDFE6F921EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABFA38F2-F026-4173-B8FF-DEDFE6F921EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98B45F9B-E7E3-4629-9BFB-27D824D56305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98B45F9B-E7E3-4629-9BFB-27D824D56305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98B45F9B-E7E3-4629-9BFB-27D824D56305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98B45F9B-E7E3-4629-9BFB-27D824D56305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CCFDA82-0068-43BE-899E-C3C36DBB1F92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CCFDA82-0068-43BE-899E-C3C36DBB1F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CCFDA82-0068-43BE-899E-C3C36DBB1F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CCFDA82-0068-43BE-899E-C3C36DBB1F92}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A46C81A6-5A4F-4754-9332-A446AF98086F} = {CE1D06E2-B71C-4AF6-A68E-2070852A60BC}
+		{EA8F3BDE-584F-46F9-926F-075C2E6DE22E} = {CE1D06E2-B71C-4AF6-A68E-2070852A60BC}
+		{ABFA38F2-F026-4173-B8FF-DEDFE6F921EB} = {CE1D06E2-B71C-4AF6-A68E-2070852A60BC}
+		{98B45F9B-E7E3-4629-9BFB-27D824D56305} = {CE1D06E2-B71C-4AF6-A68E-2070852A60BC}
+		{9CCFDA82-0068-43BE-899E-C3C36DBB1F92} = {CE1D06E2-B71C-4AF6-A68E-2070852A60BC}
+	EndGlobalSection
+EndGlobal

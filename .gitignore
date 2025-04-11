@@ -1,0 +1,25 @@
+# IDE
+.vs/
+.idea/
+
+# Build output
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+
+# User-specific
+*.user
+*.suo
+
+# Artifacts
+*.mp4
+*.avi
+*.zip
+*.exe
+*.dll
+*.log
+*.db
+
+# Others
+node_modules/
