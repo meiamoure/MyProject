@@ -65,7 +65,8 @@ public class AuthController(
         }
 
         var token = jwtProvider.Generate(user);
-        return Ok(new { token, user = new { user.Id, user.Name, user.Email, user.PictureUrl } });
+        var redirectUrl = $"http://localhost:5173/oauth-callback?token={token}";
+        return Redirect(redirectUrl);
     }
 
     [Authorize]

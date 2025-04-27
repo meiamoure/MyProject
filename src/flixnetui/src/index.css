@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "@fontsource/inter";
+
+body {
+    @apply font-sans bg-gray-800 text-white;
+}
+
+.container {
+    @apply w-full max-w-screen-xl bg-neutral-800 rounded-xl shadow-lg p-6 my-8 mx-auto;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.movie-card {
+    @apply bg-neutral-700 rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300 shadow-xl w-64;
+}
+
+.movie-title {
+    @apply p-3 text-center font-medium text-white text-sm truncate;
+}
+
+.movie-image {
+    @apply w-full h-80 object-cover;
+}
+
+.sidebar {
+    @apply w-52 space-y-2;
+}
+
+.search-bar {
+    @apply bg-neutral-700 p-2 rounded w-60 text-sm placeholder-gray-400 text-white;
+}
+
+.genres-list {
+    @apply space-y-2;
+}

@@ -1,6 +1,6 @@
-﻿using FlixNet.Application.Domain.Movies.Queries.GetMovieByName;
+﻿using FlixNet.Application.Domain.Genres.Queries.GetGenres;
+using FlixNet.Application.Domain.Movies.Queries.GetMovieByName;
 using FlixNet.Application.Domain.Movies.Queries.GetMovies;
-using FlixNet.Core.Exceptions;
 using FlixNet.Persistence.EFCore.FlixNetDb;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +22,11 @@ public class GetMovieByNameQueryHandler(FlixNetDbContext dbContext) :
                 m.Title,
                 m.Description,
                 m.PosterUrl,
-                m.VideoUrl))
+                m.VideoUrl,
+                m.Genres
+                 .Select(mg => new GenreDto(mg.Genre.Id, mg.Genre.GenreName))
+                 .ToArray()
+                ))
             .ToListAsync(cancellationToken);
 
         if (movies.Count == 0)

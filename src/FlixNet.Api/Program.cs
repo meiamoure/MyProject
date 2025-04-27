@@ -16,21 +16,28 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.SpaServices;
+using Microsoft.AspNetCore.SpaServices.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// 1. Add DbContext
 builder.Services.AddDbContext<FlixNetDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("FlixNet")));
+
+// 2. Repositories and UoW
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+// 3. Core App & Infrastructure
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+// 4. Controllers & Swagger
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -57,20 +64,33 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// 5. App settings & limits
 builder.Logging.AddConsole();
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 2_147_483_648; // 2 GB
+});
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 2_147_483_648;
+});
 
 builder.Services.Configure<GoogleOAuthSettings>(
     builder.Configuration.GetSection("GoogleOAuthSettings"));
 
-builder.WebHost.ConfigureKestrel(options =>
+// 6. CORS
+builder.Services.AddCors(options =>
 {
-    options.Limits.MaxRequestBodySize = 2147483648;
-});
-builder.Services.Configure<FormOptions>(options =>
-{
-    options.MultipartBodyLengthLimit = 2147483648;
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
 });
 
+// 7. JWT Auth
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -87,23 +107,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// 8. SPA Static Files
+builder.Services.AddSpaStaticFiles(configuration =>
+{
+    configuration.RootPath = "clientapp/build";
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// --- Middleware chain ---
+
+// Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-
+// Migration (optional)
 using (var scope = app.Services.CreateScope())
 {
     try
     {
-        var services = scope.ServiceProvider;
-        var context = services.GetRequiredService<FlixNetDbContext>();
-
+        var context = scope.ServiceProvider.GetRequiredService<FlixNetDbContext>();
         context.Database.Migrate();
     }
     catch (Exception ex)
@@ -112,36 +138,52 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+// Serve static files & SPA
+app.UseStaticFiles();
+app.UseSpaStaticFiles();
+
+app.UseRouting();
+
+app.UseCors("AllowFrontend");
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseCustomExceptionHandler(app.Environment);
+
+// Custom static folders
 var provider = new FileExtensionContentTypeProvider();
 provider.Mappings[".mp4"] = "video/mp4";
 provider.Mappings[".jpg"] = "image/jpeg";
 provider.Mappings[".jpeg"] = "image/jpeg";
 provider.Mappings[".png"] = "image/png";
 
-Console.WriteLine("ASPNETCORE_ENVIRONMENT: " + builder.Environment.EnvironmentName);
-
-
-app.UseCustomExceptionHandler(app.Environment);
-
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(app.Environment.WebRootPath, "videos")),
-    RequestPath = "/videos"
+    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.WebRootPath, "videos")),
+    RequestPath = "/videos",
+    ContentTypeProvider = provider
 });
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(app.Environment.WebRootPath, "posters")),
-    RequestPath = "/posters"
+    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.WebRootPath, "posters")),
+    RequestPath = "/posters",
+    ContentTypeProvider = provider
 });
 
-app.UseAuthentication();
-
-app.UseAuthorization();
-
+// API endpoints
 app.MapControllers();
+
+// SPA fallback
+/*app.UseSpa(spa =>
+{
+    spa.Options.SourcePath = "clientapp";
+
+    if (app.Environment.IsDevelopment())
+    {
+        spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+    }
+});*/
 
 app.Run();
 
